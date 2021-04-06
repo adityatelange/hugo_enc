@@ -161,10 +161,6 @@ window.onload = () => {
                         prompt = BeautifulSoup(
                             '<p><i>Part of this article is encrypted with password, please goto the original webpage to check it out.</i></p>', 'html.parser')
 
-                    else:
-                        prompt = BeautifulSoup(
-                            '<p><i>以下内容被密码保护。请前往原网站查看。</i></p>', 'html.parser')
-
                     block.replace_with(prompt)
                     description.string.replace_with(str(post))
 

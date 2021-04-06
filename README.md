@@ -2,9 +2,6 @@
 
 **Hugo-Encryptor** is a tool to protect your [Hugo](https://gohugo.io) posts. It uses AES-256 to encrypt the contents of your posts, and inserts a snippet of `<script>` code to verify whether the password is correct or not in readers' browser. Without a correct key, nobody can decrypt your private posts.
 
-[中文文档](./README-zh_CN.md) [DEMO](https://blog.0e1.top/post/2019/03/this-is-hugo-encryptor/)
-
-
 ## Installation
 
 Environmental dependence: Python3
@@ -64,16 +61,6 @@ It may be something like:
     $ python /absolute/path/to/hugo_encryptor/hugo_encryptor.py
 
 Then all the private posts in your `public` directory would be encrypted thoroughly, congrats!
-
-
-## Configuration
-
-Though **Hugo-Encryptor** can run without any configurations, if you like, you can configure it (hmm.. slightly).
-
-```toml
-[params]
-  hugoEncryptorLanguage = "zh-cn"     # within ["zh-cn", "zh-cn"]
-```
 
 ### Style
 

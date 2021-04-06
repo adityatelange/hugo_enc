@@ -1,44 +1,21 @@
-{{ $_hugo_config := `{ "version": 1 }` }}
 {{/*
-    ## Hugo Encrypt
-    ### Params:
-    - `password`：
+## Hugo Encryptor
 
-        require param
-    - Simple
-
-        {{% hugo-encryptor "your password" %}}
+{{% hugo-encryptor "your password" %}}
 your content
 {{% /hugo-encryptor %}}
 
 */}}
-{{/* DEFAULTS */}}
 
 <div class="hugo-encryptor-container">
   <div class="hugo-encryptor-prompt">
-    {{ if eq .Site.Params.hugoEncryptorLanguage "en-us" }}
-      <p>Part of this article is encrypted with password:</p>
-    {{ else }}
-      <p>文章的部分内容被密码保护：</p>
-    {{ end }}
+    <p>Part of this article is encrypted with password:</p>
   </div>
   <div class="hugo-encryptor-form">
-    <input
-      class="hugo-encryptor-input"
-      placeholder='{{ if eq .Site.Params.hugoEncryptorLanguage "en-us" }}Please input the password{{ else }}请输入密码{{ end }}'
-    />
-    <input
-      class="hugo-encryptor-button"
-      type="button"
-      value='{{ if eq .Site.Params.hugoEncryptorLanguage "en-us" }}Click to verify{{ else }}点击验证{{ end }}'
-      onclick="_click_handler(this)"
-    />
+    <input class="hugo-encryptor-input" placeholder='Please input the password' />
+    <input class="hugo-encryptor-button" type="button" value='Click to verify' onclick="_click_handler(this)" />
   </div>
-  <div
-    class="hugo-encryptor-cipher-text"
-    data-password="{{ .Get 0 }}"
-    style="display: none;"
-  >
+  <div class="hugo-encryptor-cipher-text" data-password="{{ .Get 0 }}" style="display: none;">
     <span style="display: none;">--- DON'T MODIFY THIS LINE ---</span>
     {{ .Inner }}
   </div>
