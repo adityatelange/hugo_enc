@@ -1,5 +1,7 @@
 # Hugo Encryptor
 
+> Note: This is a fork of https://github.com/Li4n0/hugo_encryptor
+
 **Hugo-Encryptor** is a tool to protect your [Hugo](https://gohugo.io) posts. It uses AES-256 to encrypt the contents of your posts, and inserts a snippet of `<script>` code to verify whether the password is correct or not in readers' browser. Without a correct key, nobody can decrypt your private posts.
 
 ## Installation
@@ -8,7 +10,7 @@ Environmental dependence: Python3
 
 ### Step 1: Install all the requirements of Hugo-Encryptor
 
-    $ git clone https://github.com/Li4n0/hugo_encryptor.git
+    $ git clone https://github.com/adityatelange/hugo_encryptor.git
     $ cd hugo_encryptor
     $ chmod +x hugo_encryptor.py
     $ pip install -r requirements.txt
