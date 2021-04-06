@@ -9,6 +9,7 @@ from Crypto.Cipher import AES
 
 class AESCrypt(object):
     LEN = 32
+
     def __init__(self, key: str):
         self.key = key.encode()
         self.mode = AES.MODE_CBC
@@ -43,13 +44,15 @@ if __name__ == '__main__':
                 key = md5.hexdigest()
                 cryptor = AESCrypt(key)
                 text = ''.join(map(str, block.contents))
-                written = base64.b64encode(cryptor.encrypt(text.encode('utf8')))
+                written = base64.b64encode(
+                    cryptor.encrypt(text.encode('utf8')))
 
                 del block['data-password']
                 block.string = written.decode()
 
             if len(blocks):
-                soup.body.append(soup.new_tag("script", src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"))
+                soup.body.append(soup.new_tag(
+                    "script", src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"))
                 script_tag = soup.new_tag("script")
                 script_tag.string = """
 const _do_decrypt = function(encrypted, password) {
@@ -145,21 +148,23 @@ window.onload = () => {
         for description in descriptions:
 
             if description.string is not None:
-                post = BeautifulSoup(description.string,'html.parser')
+                post = BeautifulSoup(description.string, 'html.parser')
                 block = post.find('hugo-encryptor')
 
                 if block is None:
                     pass
 
-                else:      
+                else:
                     language = block.find('p')
 
                     if language.string == 'Part of this article is encrypted with password:':
-                        prompt = BeautifulSoup('<p><i>Part of this article is encrypted with password, please goto the original webpage to check it out.</i></p>', 'html.parser')
-                    
+                        prompt = BeautifulSoup(
+                            '<p><i>Part of this article is encrypted with password, please goto the original webpage to check it out.</i></p>', 'html.parser')
+
                     else:
-                        prompt = BeautifulSoup('<p><i>以下内容被密码保护。请前往原网站查看。</i></p>','html.parser')
-                    
+                        prompt = BeautifulSoup(
+                            '<p><i>以下内容被密码保护。请前往原网站查看。</i></p>', 'html.parser')
+
                     block.replace_with(prompt)
                     description.string.replace_with(str(post))
 
