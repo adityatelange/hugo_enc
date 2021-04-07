@@ -2,6 +2,7 @@
 import os
 import base64
 import hashlib
+import pkgutil
 
 from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
@@ -23,7 +24,7 @@ class AESCrypt(object):
         return cryptor.encrypt(text)
 
 
-if __name__ == '__main__':
+def main():
     for dirpath, dirnames, filenames in os.walk('public'):
         for filename in filenames:
             if not filename.lower().endswith('.html'):
@@ -57,9 +58,8 @@ if __name__ == '__main__':
                 soup.body.append("\n")
                 script_tag = soup.new_tag("script")
 
-                decoder_script = ""
-                with open('decoder_script.js', 'r') as reader:
-                    decoder_script = reader.read()
+                decoder_script = pkgutil.get_data(
+                    'hugo_encryptor', 'decoder_script.js').decode('utf8')
 
                 script_tag.string = "\n" + decoder_script
                 soup.body.append(script_tag)
