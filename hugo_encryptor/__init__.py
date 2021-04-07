@@ -36,22 +36,28 @@ def main():
             blocks = soup.findAll(
                 'div', {'class': 'hugo-encryptor-cipher-text'})
 
-            if len(blocks):
-                print(fullpath)
+            if blocks:
+                print("[+] Processing '{}'".format(fullpath))
 
-            for block in blocks:
-                md5 = hashlib.md5()
-                md5.update(block['data-password'].encode('utf-8'))
-                key = md5.hexdigest()
-                cryptor = AESCrypt(key)
-                text = ''.join(map(str, block.contents))
-                written = base64.b64encode(
-                    cryptor.encrypt(text.encode('utf8')))
+                for block in blocks:
+                    md5 = hashlib.md5()
+                    if block.find("span"):
+                        try:
+                            md5.update(block['data-password'].encode('utf-8'))
+                            key = md5.hexdigest()
+                            cryptor = AESCrypt(key)
+                            text = ''.join(map(str, block.contents))
+                            written = base64.b64encode(
+                                cryptor.encrypt(text.encode('utf8')))
 
-                del block['data-password']
-                block.string = written.decode()
+                            del block['data-password']
+                            block.string = written.decode()
+                        except KeyError:
+                            print("\tNo Password found")
+                    else:
+                        print("\tAlready Processed")
 
-            if len(blocks):
+                # append decryption scripts
                 soup.body.append(
                     soup.new_tag("script", src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"))
 
@@ -65,9 +71,9 @@ def main():
                 soup.body.append(script_tag)
                 soup.body.append("\n")
 
-            with open(fullpath, 'w') as f:
-                html = str(soup)
-                f.write(str(soup))
+                with open(fullpath, 'w') as f:
+                    html = str(soup)
+                    f.write(str(soup))
 
     for xmlpath in ['public/index.xml', 'public/rss.xml', 'public/feed.xml']:
         try:
