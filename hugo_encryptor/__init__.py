@@ -27,53 +27,54 @@ class AESCrypt(object):
 def main():
     for dirpath, dirnames, filenames in os.walk('public'):
         for filename in filenames:
-            if not filename.lower().endswith('.html'):
-                continue
-
             fullpath = os.path.join(dirpath, filename)
+            if filename.lower().endswith('.html'):
+                soup = BeautifulSoup(open(fullpath, 'rb'), 'lxml')
+                blocks = soup.findAll(
+                    'div', {'class': 'hugo-encryptor-cipher-text'})
 
-            soup = BeautifulSoup(open(fullpath, 'rb'), 'lxml')
-            blocks = soup.findAll(
-                'div', {'class': 'hugo-encryptor-cipher-text'})
+                if blocks:
+                    print("[+] Processing '{}'".format(fullpath))
 
-            if blocks:
-                print("[+] Processing '{}'".format(fullpath))
+                    for block in blocks:
+                        md5 = hashlib.md5()
+                        if block.find("span"):
+                            try:
+                                md5.update(block['data-password'].encode('utf-8'))
+                                key = md5.hexdigest()
+                                cryptor = AESCrypt(key)
+                                text = ''.join(map(str, block.contents))
+                                written = base64.b64encode(
+                                    cryptor.encrypt(text.encode('utf8')))
 
-                for block in blocks:
-                    md5 = hashlib.md5()
-                    if block.find("span"):
-                        try:
-                            md5.update(block['data-password'].encode('utf-8'))
-                            key = md5.hexdigest()
-                            cryptor = AESCrypt(key)
-                            text = ''.join(map(str, block.contents))
-                            written = base64.b64encode(
-                                cryptor.encrypt(text.encode('utf8')))
+                                del block['data-password']
+                                block.string = written.decode()
+                            except KeyError:
+                                print("\tNo Password found")
+                        else:
+                            print("\tAlready Processed")
 
-                            del block['data-password']
-                            block.string = written.decode()
-                        except KeyError:
-                            print("\tNo Password found")
-                    else:
-                        print("\tAlready Processed")
+                    # append decryption scripts
+                    soup.body.append(
+                        soup.new_tag("script", src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"))
 
-                # append decryption scripts
-                soup.body.append(
-                    soup.new_tag("script", src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"))
+                    soup.body.append("\n")
+                    script_tag = soup.new_tag("script")
 
-                soup.body.append("\n")
-                script_tag = soup.new_tag("script")
+                    decoder_script = pkgutil.get_data(
+                        'hugo_encryptor', 'decoder_script.js').decode('utf8')
 
-                decoder_script = pkgutil.get_data(
-                    'hugo_encryptor', 'decoder_script.js').decode('utf8')
+                    script_tag.string = "\n" + decoder_script
+                    soup.body.append(script_tag)
+                    soup.body.append("\n")
 
-                script_tag.string = "\n" + decoder_script
-                soup.body.append(script_tag)
-                soup.body.append("\n")
-
-                with open(fullpath, 'w') as f:
-                    html = str(soup)
-                    f.write(str(soup))
+                    with open(fullpath, 'w') as f:
+                        html = str(soup)
+                        f.write(str(soup))
+            elif filename.lower().endswith('.xml'):
+                pass
+            elif filename.lower().endswith('.json'):
+               pass
 
     for xmlpath in ['public/index.xml', 'public/rss.xml', 'public/feed.xml']:
         try:
