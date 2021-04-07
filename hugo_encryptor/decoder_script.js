@@ -68,3 +68,16 @@ window.onload = () => {
         }
     }
 };
+
+// Get the input field
+var input = document.getElementById("hugo-encryptor-input");
+
+// Execute a function when the user releases a key on the keyboard
+input.addEventListener("keyup", function (event) {
+    if (event.key === "Enter") {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Trigger the button element with a click
+        document.getElementById("hugo-encryptor-button").click();
+    }
+});
