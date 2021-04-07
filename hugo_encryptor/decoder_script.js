@@ -12,8 +12,8 @@ const _do_decrypt = function (encrypted, password) {
 
 const _click_handler = function (element) {
     let parent = element.parentNode.parentNode;
-    let encrypted = parent.querySelector(".hugo-encryptor-cipher-text").innerText;
-    let password = parent.querySelector(".hugo-encryptor-input").value;
+    let encrypted = parent.querySelector(".hugo-encryptor-cipher-text").innerText.trim();
+    let password = parent.querySelector(".hugo-encryptor-input").value.trim();
     password = CryptoJS.MD5(password).toString();
 
     let index = -1;
@@ -62,7 +62,7 @@ window.onload = () => {
             console.log("Found password for part " + index);
 
             let parent = elements[index];
-            let encrypted = parent.querySelector(".hugo-encryptor-cipher-text").innerText;
+            let encrypted = parent.querySelector(".hugo-encryptor-cipher-text").innerText.trim();
             let decrypted = _do_decrypt(encrypted, password);
             elements[index].innerHTML = decrypted;
         }
