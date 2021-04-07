@@ -72,38 +72,30 @@ def main():
                         html = str(soup)
                         f.write(str(soup))
             elif filename.lower().endswith('.xml'):
-                pass
+                soup = BeautifulSoup(open(fullpath, 'rb'), 'xml')
+                print("[+] Processing '{}'".format(fullpath))
+                descriptions = soup('description')
+
+                for description in descriptions:
+                    if description.string is not None:
+                        post = BeautifulSoup(description.string, 'html.parser')
+                        block = post.find('hugo-encryptor')
+
+                        if block is None:
+                            pass
+
+                        else:
+                            language = block.find('p')
+
+                            if language.string == 'Part of this article is encrypted with password:':
+                                prompt = BeautifulSoup(
+                                    '<p><i>Part of this article is encrypted with password, please goto the original webpage to check it out.</i></p>', 'html.parser')
+
+                            block.replace_with(prompt)
+                            description.string.replace_with(str(post))
+
+                with open(fullpath, 'w') as f:
+                    f.write(str(soup))
+
             elif filename.lower().endswith('.json'):
                pass
-
-    for xmlpath in ['public/index.xml', 'public/rss.xml', 'public/feed.xml']:
-        try:
-            soup = BeautifulSoup(open(xmlpath, 'rb'), 'xml')
-        except FileNotFoundError:
-            continue
-
-        print(xmlpath)
-
-        descriptions = soup('description')
-
-        for description in descriptions:
-
-            if description.string is not None:
-                post = BeautifulSoup(description.string, 'html.parser')
-                block = post.find('hugo-encryptor')
-
-                if block is None:
-                    pass
-
-                else:
-                    language = block.find('p')
-
-                    if language.string == 'Part of this article is encrypted with password:':
-                        prompt = BeautifulSoup(
-                            '<p><i>Part of this article is encrypted with password, please goto the original webpage to check it out.</i></p>', 'html.parser')
-
-                    block.replace_with(prompt)
-                    description.string.replace_with(str(post))
-
-        with open(xmlpath, 'w') as f:
-            f.write(str(soup))
