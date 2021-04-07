@@ -1,84 +1,109 @@
-# Hugo Encryptor
+# Hugo Encryptor 🔏
 
 > Note: This is a fork of https://github.com/Li4n0/hugo_encryptor
 
-**Hugo-Encryptor** is a tool to protect your [Hugo](https://gohugo.io) posts. It uses AES-256 to encrypt the contents of your posts, and inserts a snippet of `<script>` code to verify whether the password is correct or not in readers' browser. Without a correct key, nobody can decrypt your private posts.
+**Hugo Encryptor** is a tool to protect your [Hugo](https://gohugo.io) posts. It uses AES-256 to encrypt the contents of your posts, and inserts a snippet of `<script>` code to verify whether the password is correct or not in readers' browser. Without a correct key, nobody can decrypt your private posts.
 
-## Installation
+Note: `Hugo Encryptor` currently works with `HTML` and `XML` outputs only
 
-Environmental dependence: Python3
-
-### Step 1: Install all the requirements of Hugo-Encryptor
-
-    $ git clone https://github.com/adityatelange/hugo_encryptor.git
-    $ cd hugo_encryptor
-    $ chmod +x hugo_encryptor.py
-    $ pip install -r requirements.txt
-
-### Step 2: Create a symlink (Optional)
-
-    $ ln -s /absolute/path/to/hugo_encryptor/hugo_encryptor.py hugo_encryptor.py
-
-### Step 3: Symlink `shortcodes/hugo-encryptor.html` into the shortcode directory of your blog:
-
-    $ mkdir -p /path/to/your/blog/layouts/shortcodes
-    $ ln -s /absolute/path/to/hugo_encryptor/shortcodes/hugo-encryptor.html /path/to/your/blog/layouts/shortcodes/hugo-encryptor.html
-
-
-## Usage
-
-### Step 1: Wrap the text you want to encrypt with the tag `hugo-encryptor`
-
-**Notice: Some text are required before you actually start the encrypting part, with a tag `<!--more-->` placed in the middle of them. Example:**
-
-```markdown
 ---
-title: "An Encrypted Post"
+
+## Installation 📥
+
+### Requirements
+
+- Python3
+### Step 1: Install Hugo-Encryptor
+
+```shell
+$ git clone https://github.com/adityatelange/hugo_encryptor.git
+$ cd hugo_encryptor
+$ pip3 install .
+```
+
+
+### Step 2: Copy `shortcodes/hugo_encryptor.html`
+
+
+Copy `shortcodes/hugo_encryptor.html` into the `shortcodes` directory of your website source
+
+```
+.(site root)
+├── content/
+├── layouts/
+│   └── shortcodes/
+│       └── hugo_encryptor.html  <---
+├── public/
+├── resources/
+├── static/
+└── themes/
+```
+
+---
+
+## Usage ℹ️
+
+Wrap the text you want to encrypt with the tag `hugo_encryptor`
+
+> Note: Some text is required before you actually start the encrypting part, with a tag `<!--more-->` placed in the middle of them. Example:**
+
+```
+---
+title: "A Post which has encrypted content"
 ---
 
 Some text is required to be placed here.
 
 <!--more-->
 
-{{% hugo-encryptor "PASSWORD" %}}
-
-# You cannot see me unless you've got the password!
+{{< hugo_encryptor "PASSWORD" >}}
 
 This is the content you want to encrypt!
 
-**Do remember to close the `hugo-encryptor` shortcodes tag:**
+{{</ hugo_encryptor >}}
 
-{{% /hugo-encryptor %}}
+```
+
+### Step 1: Generate your site
+
+Go to your website's root and generate it as usual.
+
+For ex.
+
+```shell
+$ hugo
+```
+
+### Step 2: Enncrypt your posts
+
+The following command will encrypt all the blocks with `hugo_encryptor` with provided password
+
+```shell
+$ hugo_encryptor
 ```
 
 
-### Step 2: Generate your site as usual
+---
 
-It may be something like:
+## Style 🎀
 
-    $ hugo
+**Hugo Encryptor** has **no style** elements attached to it.
 
-### Step 3: Get the encryption done!
-
-    $ python /absolute/path/to/hugo_encryptor/hugo_encryptor.py
-
-Then all the private posts in your `public` directory would be encrypted thoroughly, congrats!
-
-### Style
-
-**Hugo-Encryptor** has no any css but has left some class name for you to design your own style. Take a look at [shortcodes/hugo-encryptor.html](shortcodes/hugo-encryptor.html) ;-)
+However it has some classes which you can use to customize it accordingly.
 
 
-## Notice
+---
 
-* Do remember to keep the source code of your encrypted posts private. Never push your blog directory into a public repository.
+## Note ⚠️
 
-* Every time when you generate your site, you should run `python hugo-encryptor` again to encrypt the posts which you want to be protected. If you are worried about you will forgot that, it's a good idea to use a shell script to take the place of  `hugo` ,such as below:
+- Do remember to keep the source code of your encrypted posts private. Never push your blog directory into a public repository.
 
-```bash
-#!/bin/bash
+- Every time when you generate your site, you should run `hugo_encryptor` again to encrypt the posts which you want to be protected. If you are worried about you will forgot that, it's a good idea to use a shell script to take the place of  `hugo` ,such as below:
 
-hugo -D
-python /absolute/path/to/hugo_encryptor/hugo_encryptor.py
-rsync -a public remote@example.com:/
-```
+    ```bash
+    #!/bin/bash
+
+    hugo
+    hugo_encryptor
+    # Then upload your generated output
+    ```
