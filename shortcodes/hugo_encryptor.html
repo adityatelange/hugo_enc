@@ -12,11 +12,11 @@ your content
     <p>Part of this article is encrypted with password:</p>
   </div>
   <div class="hugo-encryptor-form">
-    <input class="hugo-encryptor-input" placeholder='Please input the password' />
-    <input class="hugo-encryptor-button" type="button" value='Click to verify' onclick="_click_handler(this)" />
+    <input class="hugo-encryptor-input" id="hugo-encryptor-input" placeholder='Please input the password' /><br>
+    <button class="hugo-encryptor-button" id="hugo-encryptor-button" onclick="_click_handler(this)">Unlock</button>
   </div>
   <div class="hugo-encryptor-cipher-text" data-password="{{ .Get 0 }}" style="display: none;">
     <span style="display: none;">--- DON'T MODIFY THIS LINE ---</span>
-    {{ .Inner }}
+    {{- .Inner -}}
   </div>
 </div>
