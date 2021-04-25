@@ -29,6 +29,9 @@ class AESCrypt(object):
 
 def main():
     scriptURL = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.js"
+    placeholder = "This article is encrypted with a password, please goto the original webpage to check it out."
+    identifier = "--- DON'T MODIFY THIS LINE ---"
+
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["scriptURL="])
     except getopt.GetoptError:
@@ -99,8 +102,7 @@ def main():
                     description = item('description')[0]
 
                     if description.string:
-                        placeholder = 'This article is encrypted with a password, please goto the original webpage to check it out.'
-                        if "--- DON'T MODIFY THIS LINE ---" in description.string:
+                        if identifier in description.string:
                             description.string.replace_with(str(placeholder))
                             print("\tProcessed for: {}".format(link.string))
                         elif placeholder in description.string:
@@ -119,8 +121,7 @@ def main():
 
                     for x in data:
                         for y in x:
-                            placeholder = 'This article is encrypted with a password, please goto the original webpage to check it out.'
-                            if "--- DON'T MODIFY THIS LINE ---" in x[y]:
+                            if identifier in x[y]:
                                 x[y] = placeholder
                 except Exception as e:
                     print("\t[!] {}: {}".format(type(e).__name__, e))
