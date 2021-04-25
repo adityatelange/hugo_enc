@@ -13,30 +13,34 @@ Note: `Hugo Encryptor` currently works with `HTML` and `XML` outputs only
 ### Requirements
 
 - Python3
-### Step 1: Install Hugo-Encryptor
+### Step 1: Clone Hugo-Encryptor
+
+1. Change your directory to your website source
+
+    ```shell
+    $ cd to/your/hugo/website/source
+    ```
+
+2. Install `hugo_encryptor` as a submodule
+
+    ```shell
+    $ git submodule add https://github.com/adityatelange/hugo_encryptor themes/hugo_encryptor --depth=1
+    ```
+
+3. Add `hugo_encryptor` as a theme
+
+    In your `config.yml` add `hugo_encryptor` in themes variable ex.
+
+    ```yml
+     theme: [MyTheme, hugo_encryptor]
+    ```
+
+### Step 2: Install Hugo-Encryptor
+
 
 ```shell
-$ git clone https://github.com/adityatelange/hugo_encryptor.git
-$ cd hugo_encryptor
+$ cd themes/hugo_encryptor
 $ pip3 install .
-```
-
-
-### Step 2: Copy `shortcodes/hugo_encryptor.html`
-
-
-Copy `shortcodes/hugo_encryptor.html` into the `shortcodes` directory of your website source
-
-```
-.(site root)
-├── content/
-├── layouts/
-│   └── shortcodes/
-│       └── hugo_encryptor.html  <---
-├── public/
-├── resources/
-├── static/
-└── themes/
 ```
 
 ---
@@ -74,7 +78,7 @@ For ex.
 $ hugo
 ```
 
-### Step 2: Enncrypt your posts
+### Step 2: Encrypt your posts
 
 The following command will encrypt all the blocks with `hugo_encryptor` with provided password
 
@@ -89,7 +93,7 @@ $ hugo_encryptor
 
 **Hugo Encryptor** has **no style** elements attached to it.
 
-However it has some classes which you can use to customize it accordingly.
+However, it has some classes which you can use to customize it accordingly.
 
 
 ---
@@ -98,7 +102,7 @@ However it has some classes which you can use to customize it accordingly.
 
 - Do remember to keep the source code of your encrypted posts private. Never push your blog directory into a public repository.
 
-- Every time when you generate your site, you should run `hugo_encryptor` again to encrypt the posts which you want to be protected. If you are worried about you will forgot that, it's a good idea to use a shell script to take the place of  `hugo` ,such as below:
+- Every time when you generate your site, you should run `hugo_encryptor` again to encrypt the posts which you want to be protected. If you are worried about you will forget that, it's a good idea to use a shell script to take the place of `hugo`,such as below:
 
     ```bash
     #!/bin/bash
