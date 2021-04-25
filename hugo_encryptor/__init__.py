@@ -1,8 +1,10 @@
 # coding=utf-8
 import os
+import sys
 import base64
 import hashlib
 import pkgutil
+import getopt
 
 from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
@@ -25,6 +27,20 @@ class AESCrypt(object):
 
 
 def main():
+    scriptURL = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["scriptURL="])
+    except getopt.GetoptError:
+        print('hugo-encryptor.py --scriptURL <scriptURL>')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print('hugo-encryptor.py --scriptURL <scriptURL>')
+            sys.exit()
+        elif opt in ("--scriptURL"):
+            scriptURL = arg
+    print('=> scriptURL =', scriptURL)
+
     for dirpath, dirnames, filenames in os.walk('public'):
         for filename in filenames:
             fullpath = os.path.join(dirpath, filename)
@@ -40,7 +56,8 @@ def main():
                         md5 = hashlib.md5()
                         if block.find("span"):
                             try:
-                                md5.update(block['data-password'].encode('utf-8'))
+                                md5.update(
+                                    block['data-password'].encode('utf-8'))
                                 key = md5.hexdigest()
                                 cryptor = AESCrypt(key)
                                 text = ''.join(map(str, block.contents))
@@ -56,7 +73,7 @@ def main():
 
                     # append decryption scripts
                     soup.body.append(
-                        soup.new_tag("script", src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"))
+                        soup.new_tag("script", src=scriptURL))
 
                     soup.body.append("\n")
                     script_tag = soup.new_tag("script")
@@ -98,4 +115,4 @@ def main():
                     f.write(str(soup))
 
             elif filename.lower().endswith('.json'):
-               pass
+                pass
