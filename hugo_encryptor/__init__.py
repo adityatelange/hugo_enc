@@ -91,25 +91,19 @@ def main():
             elif filename.lower().endswith('.xml'):
                 soup = BeautifulSoup(open(fullpath, 'rb'), 'xml')
                 print("[+] Processing '{}'".format(fullpath))
-                descriptions = soup('description')
+                items = soup('item')
 
-                for description in descriptions:
-                    if description.string is not None:
-                        post = BeautifulSoup(description.string, 'html.parser')
-                        block = post.find('hugo-encryptor')
+                for item in items:
+                    link = item('link')[0]
+                    description = item('description')[0]
 
-                        if block is None:
-                            pass
-
-                        else:
-                            language = block.find('p')
-
-                            if language.string == 'Part of this article is encrypted with password:':
-                                prompt = BeautifulSoup(
-                                    '<p><i>Part of this article is encrypted with password, please goto the original webpage to check it out.</i></p>', 'html.parser')
-
-                            block.replace_with(prompt)
-                            description.string.replace_with(str(post))
+                    if description.string:
+                        placeholder = 'This article is encrypted with a password, please goto the original webpage to check it out.'
+                        if "--- DON'T MODIFY THIS LINE ---" in description.string:
+                            description.string.replace_with(str(placeholder))
+                            print("\tProcessed for: {}".format(link.string))
+                        elif placeholder in description.string:
+                            print("\tAlready Processed")
 
                 with open(fullpath, 'w') as f:
                     f.write(str(soup))
