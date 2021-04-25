@@ -28,7 +28,7 @@ class AESCrypt(object):
 
 
 def main():
-    scriptURL = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"
+    scriptURL = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.js"
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["scriptURL="])
     except getopt.GetoptError:
@@ -40,7 +40,7 @@ def main():
             sys.exit()
         elif opt in ("--scriptURL"):
             scriptURL = arg
-    print('=> scriptURL =', scriptURL)
+            print('=> scriptURL =', scriptURL)
 
     for dirpath, dirnames, filenames in os.walk('public'):
         for filename in filenames:
