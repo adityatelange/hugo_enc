@@ -12,12 +12,12 @@ const _do_decrypt = function (encrypted, password) {
 
 const _click_handler = function (element) {
     let parent = element.parentNode.parentNode;
-    let encrypted = parent.querySelector(".hugo-encryptor-cipher-text").innerText.trim();
-    let password = parent.querySelector(".hugo-encryptor-input").value.trim();
+    let encrypted = parent.querySelector(".hugo-enc-cipher-text").innerText.trim();
+    let password = parent.querySelector(".hugo-enc-input").value.trim();
     password = CryptoJS.MD5(password).toString();
 
     let index = -1;
-    let elements = document.querySelectorAll(".hugo-encryptor-container");
+    let elements = document.querySelectorAll(".hugo-enc-container");
     for (index = 0; index < elements.length; ++index) {
         if (elements[index].isSameNode(parent)) {
             break;
@@ -47,7 +47,7 @@ const _click_handler = function (element) {
 
 window.onload = () => {
     let index = -1;
-    let elements = document.querySelectorAll(".hugo-encryptor-container");
+    let elements = document.querySelectorAll(".hugo-enc-container");
 
     while (1) {
         ++index;
@@ -62,7 +62,7 @@ window.onload = () => {
             console.log("Found password for part " + index);
 
             let parent = elements[index];
-            let encrypted = parent.querySelector(".hugo-encryptor-cipher-text").innerText.trim();
+            let encrypted = parent.querySelector(".hugo-enc-cipher-text").innerText.trim();
             let decrypted = _do_decrypt(encrypted, password);
             elements[index].innerHTML = decrypted;
         }
@@ -70,7 +70,7 @@ window.onload = () => {
 };
 
 // Get the input field
-var input = document.getElementById("hugo-encryptor-input");
+var input = document.getElementById("hugo-enc-input");
 
 // Execute a function when the user releases a key on the keyboard
 input.addEventListener("keyup", function (event) {
@@ -78,6 +78,6 @@ input.addEventListener("keyup", function (event) {
         // Cancel the default action, if needed
         event.preventDefault();
         // Trigger the button element with a click
-        document.getElementById("hugo-encryptor-button").click();
+        document.getElementById("hugo-enc-button").click();
     }
 });

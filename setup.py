@@ -2,9 +2,9 @@ from setuptools import setup
 
 
 setup(
-    name='hugo_encryptor',
+    name='hugo_enc',
     version="1.0",
-    packages=["hugo_encryptor"],
+    packages=["hugo_enc"],
     author="Li4n0, adityatelange",
     install_requires=[
         "beautifulsoup4==4.9.3",
@@ -12,10 +12,10 @@ setup(
         "lxml==4.6.3"
     ],
     description="A python tool to encrypt hugo posts",
-    package_data={'hugo_encryptor': ['decoder_script.js']},
-    url='https://github.com/adityatelange/hugo_encryptor',
+    package_data={'hugo_enc': ['decoder_script.js']},
+    url='https://github.com/adityatelange/hugo_enc',
     entry_points={'console_scripts': [
-        'hugo_encryptor = hugo_encryptor:main']},
+        'hugo_enc = hugo_enc:main']},
     classifiers=[
         "Programming Language :: Python",
     ],

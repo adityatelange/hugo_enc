@@ -1,0 +1,25 @@
+{{/*
+## Hugo Encryptor
+
+{{</ hugo_enc "your password" >}}
+your content
+{{</ /hugo_enc >}}
+
+*/}}
+
+<div class="hugo-enc-container">
+  <div class="hugo-enc-prompt">
+    <p>{{ .Site.Params.hugoEnc.promptText | default "Part of this article is encrypted with password:" }}</p>
+  </div>
+  <div class="hugo-enc-form">
+    <input class="hugo-enc-input" id="hugo-enc-input"
+      placeholder='{{ .Site.Params.hugoEnc.inputPlaceholder | default "Please input the password"}}' /><br>
+    <button class="hugo-enc-button" id="hugo-enc-button" onclick="_click_handler(this)">
+      {{- .Site.Params.hugoEnc.buttonText | default "Unlock" -}}
+    </button>
+  </div>
+  <div class="hugo-enc-cipher-text" data-password="{{ .Get 0 }}" style="display: none;">
+    <span style="display: none;">--- DON'T MODIFY THIS LINE ---</span>
+    {{- .Inner -}}
+  </div>
+</div>

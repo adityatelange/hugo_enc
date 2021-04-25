@@ -32,11 +32,11 @@ def main():
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["scriptURL="])
     except getopt.GetoptError:
-        print('hugo-encryptor.py --scriptURL <scriptURL>')
+        print('hugo_enc --scriptURL <scriptURL>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print('hugo-encryptor.py --scriptURL <scriptURL>')
+            print('hugo_enc --scriptURL <scriptURL>')
             sys.exit()
         elif opt in ("--scriptURL"):
             scriptURL = arg
@@ -48,7 +48,7 @@ def main():
             if filename.lower().endswith('.html'):
                 soup = BeautifulSoup(open(fullpath, 'rb'), 'lxml')
                 blocks = soup.findAll(
-                    'div', {'class': 'hugo-encryptor-cipher-text'})
+                    'div', {'class': 'hugo-enc-cipher-text'})
 
                 if blocks:
                     print("[+] Processing '{}'".format(fullpath))
@@ -80,7 +80,7 @@ def main():
                     script_tag = soup.new_tag("script")
 
                     decoder_script = pkgutil.get_data(
-                        'hugo_encryptor', 'decoder_script.js').decode('utf8')
+                        'hugo_enc', 'decoder_script.js').decode('utf8')
 
                     script_tag.string = "\n" + decoder_script
                     soup.body.append(script_tag)
