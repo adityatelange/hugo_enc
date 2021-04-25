@@ -5,6 +5,7 @@ import base64
 import hashlib
 import pkgutil
 import getopt
+import json
 
 from bs4 import BeautifulSoup
 from Crypto.Cipher import AES
@@ -109,4 +110,21 @@ def main():
                     f.write(str(soup))
 
             elif filename.lower().endswith('.json'):
-                pass
+                print("[+] Processing '{}'".format(fullpath))
+
+                data = None
+                try:
+                    with open(fullpath) as f:
+                        data = json.load(f)
+
+                    for x in data:
+                        for y in x:
+                            placeholder = 'This article is encrypted with a password, please goto the original webpage to check it out.'
+                            if "--- DON'T MODIFY THIS LINE ---" in x[y]:
+                                x[y] = placeholder
+                except Exception as e:
+                    print("\t[!] {}: {}".format(type(e).__name__, e))
+                finally:
+                    if data:
+                        with open(fullpath, "w") as f:
+                            json.dump(data, f, indent=4)
