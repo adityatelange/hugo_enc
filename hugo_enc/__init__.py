@@ -33,15 +33,28 @@ def main():
     identifier = "--- DON'T MODIFY THIS LINE ---"
     destination = "public"
 
+    help_strings = """
+    Usage:
+        hugo_enc [flags]
+
+    Flags:
+        -h, --help              -           get help about hugo_enc
+            --scriptURL         string      override the default 'scriptURL' to load crypto-js
+                                            (default: {})
+            --destination       string      set the output folder (default: 'public')
+    """.format(scriptURL)
+
     try:
         opts, args = getopt.getopt(sys.argv[1:], "hi:o:",
-                                   ["scriptURL=", "destination="])
-    except getopt.GetoptError:
-        print('hugo_enc --scriptURL <scriptURL>')
+                                   ["help", "scriptURL=", "destination="])
+    except getopt.GetoptError as err:
+        print(err)
+        print(help_strings)
         sys.exit(2)
+
     for opt, arg in opts:
-        if opt == '-h':
-            print('hugo_enc --scriptURL <scriptURL>')
+        if opt in ('-h', '--help'):
+            print(help_strings)
             sys.exit()
         elif opt in ("--scriptURL"):
             scriptURL = arg
@@ -51,7 +64,8 @@ def main():
             print('=> destination =', destination)
 
     if not os.path.exists(destination):
-        sys.exit("[!] No destination directory '{}' found!\n[!] No files processed.".format(destination))
+        sys.exit("[!] No destination directory '{}' found!\n[!] No files processed.".format(
+            destination))
 
     for dirpath, dirnames, filenames in os.walk(destination):
         for filename in filenames:
