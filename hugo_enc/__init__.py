@@ -50,6 +50,9 @@ def main():
             destination = arg
             print('=> destination =', destination)
 
+    if not os.path.exists(destination):
+        sys.exit("[!] No destination directory '{}' found!\n[!] No files processed.".format(destination))
+
     for dirpath, dirnames, filenames in os.walk(destination):
         for filename in filenames:
             fullpath = os.path.join(dirpath, filename)
