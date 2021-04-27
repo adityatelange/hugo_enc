@@ -4,7 +4,7 @@
 
 **Hugo Enc** is a tool to protect your [Hugo](https://gohugo.io) posts. It uses AES-256 to encrypt the contents of your posts, and inserts a snippet of `<script>` code to verify whether the password is correct or not in readers' browser. Without a correct key, nobody can decrypt your private posts.
 
-Note: `Hugo Encryptor` currently works with `HTML` and `XML` outputs only
+**Hugo Enc** currently works with `HTML`, `XML` and `JSON` outputs.
 
 ---
 
@@ -12,7 +12,8 @@ Note: `Hugo Encryptor` currently works with `HTML` and `XML` outputs only
 
 ### Requirements
 
-- Python3
+-   Python3
+
 ### Step 1: Clone Hugo-Enc
 
 1. Change your directory to your website source
@@ -32,11 +33,10 @@ Note: `Hugo Encryptor` currently works with `HTML` and `XML` outputs only
     In your `config.yml` add `hugo_enc` in themes variable ex.
 
     ```yml
-     theme: [MyTheme, hugo_enc]
+    theme: [MyTheme, hugo_enc]
     ```
 
 ### Step 2: Install Hugo-Enc
-
 
 ```shell
 $ cd themes/hugo_enc
@@ -49,7 +49,7 @@ $ pip3 install .
 
 Wrap the text you want to encrypt with the tag `hugo_enc`
 
-> Note: Some text is required before you actually start the encrypting part, with a tag `<!--more-->` placed in the middle of them. Example:**
+> Note: Some text is required before you actually start the encrypting part, with a tag `<!--more-->` placed in the middle of them. Example:\*\*
 
 ```
 ---
@@ -66,6 +66,18 @@ This is the content you want to encrypt!
 
 {{</ hugo_enc >}}
 
+```
+
+Usage for `hugo_enc`
+
+```shell
+Usage:
+        hugo_enc [flags]
+
+Flags:
+    -h, --help              -           get help about hugo_enc
+        --scriptURL         string      override the default 'scriptURL' to load crypto-js
+        --destination       string      set the output folder (default: 'public')
 ```
 
 ### Step 1: Generate your site
@@ -86,7 +98,6 @@ The following command will encrypt all the blocks with `hugo_enc` with provided 
 $ hugo_enc
 ```
 
-
 ---
 
 ## Style 🎀
@@ -95,14 +106,29 @@ $ hugo_enc
 
 However, it has some classes which you can use to customize it accordingly.
 
+View the template here => [layouts/shortcodes/hugo_enc.html](layouts/shortcodes/hugo_enc.html)
+
+---
+
+## Adding custom Text to `hugo_enc` shortcode
+
+You can use the following `params` in your `site config.yml`:
+
+```yml
+Params:
+    hugoEnc:
+        promptText: "Part of this article is encrypted with password:"
+        inputPlaceholder: "Please input the password"
+        buttonText: "Unlock"
+```
 
 ---
 
 ## Note ⚠️
 
-- Do remember to keep the source code of your encrypted posts private. Never push your blog directory into a public repository.
+-   Do remember to keep the source code of your encrypted posts private. Never push your blog directory into a public repository.
 
-- Every time when you generate your site, you should run `hugo_enc` again to encrypt the posts which you want to be protected. If you are worried about you will forget that, it's a good idea to use a shell script to take the place of `hugo`,such as below:
+-   Every time when you generate your site, you should run `hugo_enc` again to encrypt the posts which you want to be protected. If you are worried about you will forget that, it's a good idea to use a shell script to take the place of `hugo`,such as below:
 
     ```bash
     #!/bin/bash
