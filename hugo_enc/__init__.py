@@ -31,9 +31,11 @@ def main():
     scriptURL = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.js"
     placeholder = "This article is encrypted with a password, please goto the original webpage to check it out."
     identifier = "--- DON'T MODIFY THIS LINE ---"
+    destination = "public"
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "hi:o:", ["scriptURL="])
+        opts, args = getopt.getopt(sys.argv[1:], "hi:o:",
+                                   ["scriptURL=", "destination="])
     except getopt.GetoptError:
         print('hugo_enc --scriptURL <scriptURL>')
         sys.exit(2)
@@ -44,8 +46,11 @@ def main():
         elif opt in ("--scriptURL"):
             scriptURL = arg
             print('=> scriptURL =', scriptURL)
+        elif opt in ("--destination"):
+            destination = arg
+            print('=> destination =', destination)
 
-    for dirpath, dirnames, filenames in os.walk('public'):
+    for dirpath, dirnames, filenames in os.walk(destination):
         for filename in filenames:
             fullpath = os.path.join(dirpath, filename)
             if filename.lower().endswith('.html'):
