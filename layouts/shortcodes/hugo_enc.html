@@ -7,6 +7,7 @@ your content
 
 */}}
 
+{{ if not .Site.IsServer }}
 <div class="hugo-enc-container">
   <div class="hugo-enc-prompt">
     <p>{{ .Site.Params.hugoEnc.promptText | default "Part of this article is encrypted with password:" }}</p>
@@ -23,3 +24,6 @@ your content
     {{- .Inner -}}
   </div>
 </div>
+{{ else }}
+  {{- .Inner -}}
+{{ end }}

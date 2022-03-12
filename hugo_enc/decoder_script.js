@@ -65,6 +65,21 @@ window.onload = () => {
             let encrypted = parent.querySelector(".hugo-enc-cipher-text").innerText.trim();
             let decrypted = _do_decrypt(encrypted, password);
             elements[index].innerHTML = decrypted;
+
+            // Workaround .innerHTML stripping <script> tags
+            // First we save all the script tags
+            re = /<script.*?<\/script>/;
+            script_tags = re.exec(decrypted);
+
+            elements[index].innerHTML = decrypted;
+
+            // Now we add all script tags back into the html element
+            html_element = document.getElementsByTagName("html")[0];
+            range = document.createRange();
+            range.setStart(html_element, 0);
+            script_tags.forEach(tag => {
+                html_element.appendChild(range.createContextualFragment(tag));
+            });
         }
     }
 };

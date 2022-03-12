@@ -86,7 +86,7 @@ def main():
                                     block['data-password'].encode('utf-8'))
                                 key = md5.hexdigest()
                                 cryptor = AESCrypt(key)
-                                text = ''.join(map(str, block.contents))
+                                text = ''.join(map(str, block.contents)).replace("&amp;mldr;", "&mldr;")
                                 written = base64.b64encode(
                                     cryptor.encrypt(text.encode('utf8')))
 
