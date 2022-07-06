@@ -9,7 +9,7 @@ setup(
     install_requires=[
         "beautifulsoup4==4.9.3",
         "pycryptodome==3.10.1",
-        "lxml==4.6.5"
+        "lxml==4.9.1"
     ],
     description="A python tool to encrypt hugo posts",
     package_data={'hugo_enc': ['decoder_script.js']},
