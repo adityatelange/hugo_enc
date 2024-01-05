@@ -8,7 +8,7 @@ setup(
     author="Li4n0, adityatelange",
     install_requires=[
         "beautifulsoup4==4.9.3",
-        "pycryptodome==3.10.1",
+        "pycryptodome==3.19.1",
         "lxml==4.6.5"
     ],
     description="A python tool to encrypt hugo posts",
